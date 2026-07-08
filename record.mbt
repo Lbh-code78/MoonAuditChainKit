@@ -14,12 +14,7 @@ pub fn AuditRecord::new(
 ) -> AuditRecord {
   let safe_index = if index >= 0 { index } else { 0 }
   let body = "\{safe_index}|\{previous_digest}|\{event.canonical()}"
-  {
-    index: safe_index,
-    previous_digest,
-    event,
-    digest: digest_text(body),
-  }
+  { index: safe_index, previous_digest, event, digest: digest_text(body) }
 }
 
 ///|

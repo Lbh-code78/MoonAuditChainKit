@@ -49,7 +49,11 @@ test "audit chain reports first broken digest" {
     event,
     digest: "changed",
   }
-  let chain = AuditChain::{ name: "ops", genesis_digest: "genesis", records: [broken] }
+  let chain = AuditChain::{
+    name: "ops",
+    genesis_digest: "genesis",
+    records: [broken],
+  }
   let report = chain.verify()
   assert_false(report.ok)
   assert_eq(report.broken_index, 0)
@@ -58,8 +62,9 @@ test "audit chain reports first broken digest" {
 
 ///|
 test "chain proof captures length and head digest" {
-  let chain = AuditChain::new("ops")
-    .append(AuditEvent::new("alice", "deploy", "api", 1000, "v1"))
+  let chain = AuditChain::new("ops").append(
+    AuditEvent::new("alice", "deploy", "api", 1000, "v1"),
+  )
   let proof = chain.proof()
   assert_eq(proof.length, 1)
   assert_true(proof.matches(chain))
@@ -67,9 +72,12 @@ test "chain proof captures length and head digest" {
 
 ///|
 test "json export keeps stable fields" {
-  let chain = AuditChain::new("ops")
-    .append(AuditEvent::new("alice", "deploy", "api", 1000, "v1"))
-  assert_true(chain.records[0].to_json().contains("\"previous_digest\":\"genesis\""))
+  let chain = AuditChain::new("ops").append(
+    AuditEvent::new("alice", "deploy", "api", 1000, "v1"),
+  )
+  assert_true(
+    chain.records[0].to_json().contains("\"previous_digest\":\"genesis\""),
+  )
   assert_true(chain.verify().to_json().contains("\"ok\":true"))
   assert_true(chain.proof().to_json().contains("\"length\":1"))
 }

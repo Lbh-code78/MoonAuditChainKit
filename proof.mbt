@@ -7,7 +7,11 @@ pub(all) struct ChainProof {
 
 ///|
 pub fn AuditChain::proof(self : AuditChain) -> ChainProof {
-  { chain_name: self.name, length: self.length(), head_digest: self.head_digest() }
+  {
+    chain_name: self.name,
+    length: self.length(),
+    head_digest: self.head_digest(),
+  }
 }
 
 ///|

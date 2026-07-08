@@ -11,10 +11,7 @@ pub fn AuditChain::new(name : String) -> AuditChain {
 }
 
 ///|
-pub fn AuditChain::append(
-  self : AuditChain,
-  event : AuditEvent,
-) -> AuditChain {
+pub fn AuditChain::append(self : AuditChain, event : AuditEvent) -> AuditChain {
   let output : Array[AuditRecord] = []
   for record in self.records {
     output.push(record)

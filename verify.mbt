@@ -12,13 +12,28 @@ pub fn AuditChain::verify(self : AuditChain) -> VerifyReport {
   for index = 0; index < self.records.length(); index = index + 1 {
     let record = self.records[index]
     if record.index != index {
-      return { ok: false, checked: index, broken_index: index, reason: "index_mismatch" }
+      return {
+        ok: false,
+        checked: index,
+        broken_index: index,
+        reason: "index_mismatch",
+      }
     }
     if record.previous_digest != previous {
-      return { ok: false, checked: index, broken_index: index, reason: "previous_digest_mismatch" }
+      return {
+        ok: false,
+        checked: index,
+        broken_index: index,
+        reason: "previous_digest_mismatch",
+      }
     }
     if !record.valid() {
-      return { ok: false, checked: index, broken_index: index, reason: "digest_mismatch" }
+      return {
+        ok: false,
+        checked: index,
+        broken_index: index,
+        reason: "digest_mismatch",
+      }
     }
     previous = record.digest
   }
