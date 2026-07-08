@@ -1,0 +1,7 @@
+import {
+  "Lbh-code78/moonauditchainkit" @audit,
+}
+
+options(
+  "is-main": true,
+)
