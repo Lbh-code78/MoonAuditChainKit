@@ -55,3 +55,12 @@ test "audit chain reports first broken digest" {
   assert_eq(report.broken_index, 0)
   assert_eq(report.reason, "digest_mismatch")
 }
+
+///|
+test "chain proof captures length and head digest" {
+  let chain = AuditChain::new("ops")
+    .append(AuditEvent::new("alice", "deploy", "api", 1000, "v1"))
+  let proof = chain.proof()
+  assert_eq(proof.length, 1)
+  assert_true(proof.matches(chain))
+}
