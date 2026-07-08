@@ -29,3 +29,29 @@ test "audit chain appends records with linked digest" {
   assert_eq(chain.records[1].previous_digest, chain.records[0].digest)
   assert_eq(chain.head_digest(), chain.records[1].digest)
 }
+
+///|
+test "audit chain verifies intact records" {
+  let chain = AuditChain::new("ops")
+    .append(AuditEvent::new("alice", "deploy", "api", 1000, "v1"))
+    .append(AuditEvent::new("alice", "rollback", "api", 1200, "v0"))
+  let report = chain.verify()
+  assert_true(report.ok)
+  assert_eq(report.checked, 2)
+}
+
+///|
+test "audit chain reports first broken digest" {
+  let event = AuditEvent::new("alice", "deploy", "api", 1000, "v1")
+  let broken = AuditRecord::{
+    index: 0,
+    previous_digest: "genesis",
+    event,
+    digest: "changed",
+  }
+  let chain = AuditChain::{ name: "ops", genesis_digest: "genesis", records: [broken] }
+  let report = chain.verify()
+  assert_false(report.ok)
+  assert_eq(report.broken_index, 0)
+  assert_eq(report.reason, "digest_mismatch")
+}
