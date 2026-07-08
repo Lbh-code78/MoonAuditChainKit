@@ -1,0 +1,68 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Lbh-code78/moonauditchainkit"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn digest_text(String) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct AuditChain {
+  name : String
+  genesis_digest : String
+  records : Array[AuditRecord]
+} derive(Eq, @debug.Debug)
+pub fn AuditChain::append(Self, AuditEvent) -> Self
+pub fn AuditChain::head_digest(Self) -> String
+pub fn AuditChain::length(Self) -> Int
+pub fn AuditChain::new(String) -> Self
+pub fn AuditChain::proof(Self) -> ChainProof
+pub fn AuditChain::valid(Self) -> Bool
+pub fn AuditChain::verify(Self) -> VerifyReport
+
+pub(all) struct AuditEvent {
+  actor : String
+  action : String
+  resource : String
+  timestamp_ms : Int
+  payload : String
+} derive(Eq, @debug.Debug)
+pub fn AuditEvent::canonical(Self) -> String
+pub fn AuditEvent::new(String, String, String, Int, String) -> Self
+pub fn AuditEvent::to_json(Self) -> String
+
+pub(all) struct AuditRecord {
+  index : Int
+  previous_digest : String
+  event : AuditEvent
+  digest : String
+} derive(Eq, @debug.Debug)
+pub fn AuditRecord::new(Int, String, AuditEvent) -> Self
+pub fn AuditRecord::recompute_digest(Self) -> String
+pub fn AuditRecord::to_json(Self) -> String
+pub fn AuditRecord::valid(Self) -> Bool
+
+pub(all) struct ChainProof {
+  chain_name : String
+  length : Int
+  head_digest : String
+} derive(Eq, @debug.Debug)
+pub fn ChainProof::matches(Self, AuditChain) -> Bool
+pub fn ChainProof::to_json(Self) -> String
+
+pub(all) struct VerifyReport {
+  ok : Bool
+  checked : Int
+  broken_index : Int
+  reason : String
+} derive(Eq, @debug.Debug)
+pub fn VerifyReport::to_json(Self) -> String
+
+// Type aliases
+
+// Traits
+
