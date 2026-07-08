@@ -18,3 +18,14 @@ test "audit record links previous digest into current digest" {
   assert_true(record.valid())
   assert_eq(record.digest, record.recompute_digest())
 }
+
+///|
+test "audit chain appends records with linked digest" {
+  let chain = AuditChain::new("config")
+    .append(AuditEvent::new("alice", "create", "flag", 1000, "on"))
+    .append(AuditEvent::new("bob", "update", "flag", 1100, "off"))
+  assert_eq(chain.length(), 2)
+  assert_eq(chain.records[0].previous_digest, "genesis")
+  assert_eq(chain.records[1].previous_digest, chain.records[0].digest)
+  assert_eq(chain.head_digest(), chain.records[1].digest)
+}
